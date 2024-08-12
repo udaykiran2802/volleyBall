@@ -51,7 +51,7 @@ main()
 .catch(err => console.log(err));
 
 async function main() {
-  await mongoose.connect(localDBurl );  
+  await mongoose.connect(dbURL );  
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
 // online store 
