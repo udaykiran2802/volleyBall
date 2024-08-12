@@ -55,19 +55,19 @@ async function main() {
   // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
 // online store 
-// const store = MongoStore.create({
-//     mongoUrl : dbURL,
-//     crypto:{
-//         secret:process.env.SECRET,
-//     },
-//     touchAfter:24*3600,
-// })
-// store.on("error",()=>{
-//     console.log("ERROR in MONGO SESSION STORE!",err);
-// })
+const store = MongoStore.create({
+    mongoUrl : dbURL,
+    crypto:{
+        secret:process.env.SECRET,
+    },
+    touchAfter:24*3600,
+})
+store.on("error",()=>{
+    console.log("ERROR in MONGO SESSION STORE!",err);
+})
  
 const sessionOptns= {
-    // store,
+    store,
     secret: process.env.SECRET,
     resave:false,
     saveUninitialized:true,
