@@ -1,0 +1,264 @@
+
+body{
+  font-family: "Plus Jakarta Sans", sans-serif !important;
+  font-optical-sizing: auto !important;
+  justify-content: center !important;
+  height: 100vh; 
+ 
+
+ 
+}
+main.container {
+    flex: 1;
+    
+  
+}
+header{
+  width: 100%;
+}
+.noListing{
+  width: 100%;
+  height: 60vh;
+  color: #fe424d;
+  background-color: rgba(0, 198, 0, 0.3);
+  border: 2px solid #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: larger;
+  padding-left: 3rem;
+
+}
+.login{
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: 70vh;
+}
+.signup{
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  height: 70vh;
+}
+.index{
+min-height:71.6vh;
+}
+.showListing{
+  min-height:71.6vh;
+}
+
+
+.navbar{
+  height: 5rem;
+  background-color: white;
+}
+.fa-compass{
+  font-size: 2rem;
+  color: #fe424d;
+}
+.nav-link{
+  color: #222222 !important;
+}
+
+.f-info-socials i{
+  vertical-align: middle;
+  font-size: 1.2rem;
+  margin-right: 1rem;
+}
+
+.f-info-links,.f-info-socials,.f-info-brand{
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+.f-info{
+  text-align: center;
+  height: 8rem;
+  background-color: #ebebeb;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: space-evenly;
+
+}
+.f-info-links a {
+  text-decoration: none;
+  color: #222222;
+  }
+
+.f-info-links a:hover{
+  text-decoration: underline; 
+}
+
+.listing-cards{
+  border: none !important;
+  margin-bottom: 2rem;
+  border-radius: 1rem !important;    
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s;
+  background-color: white;  
+}
+
+.card{
+  position:  relative !important;
+  /* height: 200px; */
+  
+}
+.card-img-top{
+  border-radius: 1rem !important;
+  width: 100% !important;
+  object-fit: cover !important;
+  
+}
+.card-body{
+  padding: 0 !important;
+  margin-top: 0.5rem;
+  /* margin-bottom: 1rem; */
+}
+.card-text p{
+  font-weight: 400 !important;
+}
+.image-container {
+  position: relative; /* Ensure overlay is positioned absolutely within this container */
+}
+.card-img-overlay{
+  opacity : 0 ;
+}
+.card:hover .card-img-overlay {
+  opacity: 0.8;
+}
+
+.card-img-overlay{
+  color: white;
+  transition: opacity 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.5);
+  border-radius: 1rem;
+  position: absolute; /* Position it absolutely within the image container */
+  /* Allow clicks to pass through the overlay */
+  
+}
+.card-body {
+  position: relative; /* Ensure the card body is positioned relative to be on top of the overlay */
+  z-index: 1; /* Ensure the card body appears above the overlay */
+}
+.listing-cards:hover{
+  transform:  translateY(-10px);
+  box-shadow: 0px 20px 10px rgba(0, 0, 0, 0.3);
+}
+
+/*show page*/
+.show-img{
+  height: 80vh !important;
+}
+.cardR:hover{
+  transform: translateY(-9px) ;
+  /* box-shadow: 0px 10px 10px 10px rgba(0,0,0,0.5); */
+  border-radius: 1rem;
+}
+.player-card {
+  margin-top: 20px;
+}
+
+.player-image {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.show-img img {
+  max-width: 100%;
+  height: auto;
+}
+
+ .video-container {
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  overflow: hidden;
+}
+
+.video-container iframe {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+#filters-container {
+  overflow: hidden;
+  position: relative;
+}
+
+.filters-wrapper {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+  scroll-behavior: smooth;
+}
+
+.filter-item {
+  display: inline-block;
+  text-decoration: none;
+  margin-right: 10px;
+}
+.filter-item a{
+  text-decoration: none;
+}
+
+.filter-icon {
+  height: 50px;
+  width: 60px;
+
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  background-color: #fff;
+  border: none;
+  cursor: pointer;
+  padding: 5px;
+  font-size: 20px;
+  z-index: 1;
+  display: none;
+}
+
+/* Show scroll button only if needed */
+#filters-container:hover .scroll-btn {
+  display: block;
+}
+.pieChart{
+  height: 50%;
+  width: 50%;
+
+}
+.barChart{
+  width: 50%;
+  
+}
+.pro a {
+  text-decoration: none;
+}
+.player-image{
+  height: 70%;
+
+}
+.fa-volleyball{
+  color:#fe424d; 
+  font-size: x-large;
+}
+.profile{
+  height: 500px;
+}

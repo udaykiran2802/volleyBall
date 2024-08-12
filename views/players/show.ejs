@@ -1,0 +1,211 @@
+<% layout("/layouts/boilerplate") %>
+
+<body>
+    <div class="showListing">
+        <div class="row">
+            <div class="col-8 offset-3 mt-3">
+                <h3><b><%= player.name %></b></h3>
+            </div>
+            
+            <div class="card col-6 offset-3 ">
+                <img src="<%=player.image.url%>" class="card-img-top profile show-img" alt="image">
+                <div class="card-body">
+                   <div class="row">
+                    <p class="col-6">
+                        <b> Profile created by</b>  <i><%= player.owner.username  %></i></p>
+                        <p class=" pro col-6" >
+                            <a href="/players/<%= player._id  %>/progress"  class="btn btn-secondary ms-5">see progress</a></p>
+                   </div>
+                        <p class="card-text"> position :<%= player.position %> </p>
+                        <p class="card-text"> Scholar ID :<%= player.scholarID %> </p>
+                        <p class="card-text">Branch : <%= player.branch %> </p>
+                    </p>
+                </div>
+            
+            
+                    <% if(currUser && currUser._id.equals(player.owner._id)) { %>
+                        <div class="row">
+                            <div class="col-6 offset-0 mb-3 mt-3 ">
+                                <a href="/players/<%= player._id  %>/edit" class="btn btn-outline-primary ">Edit this profile</a>
+                            </div>
+                            <div class="col-6 mb-3 mt-3 ">
+                               
+                                  <form action="/players/<%= player._id %>?_method=DELETE" method="POST" class="delete-form">
+                                    <button type="button" class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmationModal" data-listing-id="<%= player._id %>">Delete this profile</button>
+                                  </form>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+        </div>
+       
+        
+        <!-- Button trigger modal -->
+
+        <% if(currUser && currUser._id.equals(player.owner._id)) { %>
+            <hr>
+        <div class=" row offset-3">
+            <div class="col-6">
+                <h3>Don't have Progress?</h3>
+            </div>
+            <div class="col-6">
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Add Progress
+                </button>
+        </div>
+        <hr>
+        <% } %>
+    
+</div>
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">ADD POINTS What you have earned !</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row offset-3 mb-3">
+                <form action="/players/<%= player._id %>" method="POST">
+                    <div class="col mb-1">
+                        <label for="servePoints">Serve Points</label>
+                        <input type="number" name="servePoints" max="10" min="0" required>
+                    </div>
+                    
+                    <div class="col mb-1">
+                        <label for="receivePoints">Receive Points</label>
+                        <input type="number" name="receivePoints" max="10" min="0" required>
+                    </div>
+                    
+                    <div class="col mb-1">
+                        <label for="hittingPoints">Hitting Points</label>
+                        <input type="number" name="hittingPoints" max="10" min="0" required>
+                    </div>
+                    
+                    <div class="col mb-1">
+                        <label for="blockingPoints">Blocking Points</label>
+                        <input type="number" name="blockingPoints" max="10" min="0" required>
+                    </div>
+                    
+                    <div class="col mb-1">
+                        <label for="defensePoints">Defense Points</label>
+                        <input type="number" name="defensePoints" max="10" min="0" required>
+                    </div>
+                    
+                    <div class="col mb-1">
+                        <label for="settingPoints">Setting Points</label>
+                        <input type="number" name="settingPoints" max="10" min="0" required>
+                    </div>
+                    
+                    <div class="col ms-5">
+                        <button type="submit" class="btn btn-outline-primary">add progress</button>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button " class="btn btn-primary">Save changes</button>
+        </div> -->
+      </div>
+    </div>
+  </div>
+       
+        </div>
+                
+              
+        <div class="col-8 offset-3 mb-3">
+        <% if(currUser){ %>
+            <h4>Leave a Review</h4>
+            <form action="/players/<%= player.id %>/reviews" method="post" novalidate class="needs-validation">
+                
+                <div class="col-8 offset-0 mb-3">
+                    <label for="rating" class="form-label">Rating</label>
+                
+                <fieldset class="starability-slot">
+                    <!-- <legend>First rating:</legend> -->
+                    <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
+                    <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                    <label for="first-rate1" title="Terrible">1 star</label>
+                    <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                    <label for="first-rate2" title="Not good">2 stars</label>
+                    <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                    <label for="first-rate3" title="Average">3 stars</label>
+                    <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                    <label for="first-rate4" title="Very good">4 stars</label>
+                    <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                    <label for="first-rate5" title="Amazing">5 stars</label>
+                </fieldset>
+                </div>  
+                  
+                <div>
+                    <label for="comment" class="form-label">Comment</label>
+                    <input type="textarea" class="form-control" id="Comment" name="review[comment]" cols="30" rows="10" required>
+                    <div class="invalid-feedback">
+                        please submit some feedback for review
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-outline-dark mt-3">Submit</button>
+            </form>
+        <% } %>
+            <hr>
+            <p><b>All Reviews</b></p>
+            
+            <div class="row">
+                <% for (let review of player.reviews) { %>
+                    <div class="card col-5 ms-3 mb-3">
+                        <div class="card-body">
+                            <h5 class="card-title">@<%= review.author.username %> </h5>
+                            <p class="starability-result card-text" data-rating="<%= review.rating %>">
+                                Rated: 3 stars
+                                </p>
+    
+                            <p class="card-text"><%= review.comment %></p>
+                            <% if(currUser &&currUser._id.equals( review.author._id)) { %>
+                            <form action="/players/<%= player._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST" class="delete-form">
+                                <button type="button" class="btn btn-dark delete-btn mb-1" data-bs-toggle="modal" data-bs-target="#confirmationModal" data-listing-id="<%= review._id %>">Delete</button>
+                            </form>
+                            <% } %>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+            
+        </div>   
+    </div>
+    
+    
+
+</body>
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+  const deleteButtons = document.querySelectorAll('.delete-btn');
+  const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+  let listingIdToDelete = null;
+
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault(); // Prevent default button behavior
+
+      listingIdToDelete = button.getAttribute('data-listing-id');
+      
+      // Show the confirmation modal
+      confirmationModal.show();
+    });
+  });
+
+  document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+    if (listingIdToDelete) {
+      // Find the form associated with the delete button
+      const form = document.querySelector(`.delete-btn[data-listing-id="${listingIdToDelete}"]`).closest('.delete-form');
+      if (form) {
+        form.submit(); // Submit the form, which will trigger the backend route
+      }
+    }
+  });
+});
+</script>
+
+

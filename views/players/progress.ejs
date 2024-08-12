@@ -1,0 +1,129 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+    <div class="index">
+        <div class="row">
+            <div class="pieChart card col-12 col-md-6 mb-3">
+                <canvas id="progressChart"></canvas>
+            </div>
+        
+            <div class="barChart card col-12 col-md-6 mb-3">
+                <form action="/players/<%= player._id %>/progress" method="get">
+                    <select class="form-select form-select-sm mb-3" name="bar" id="category" aria-label="Large select example">
+                        <option selected>select ONE</option>
+                        <option value="serve">Serve</option>
+                        <option value="hitting">Hitting</option>
+                        <option value="receive">Receive</option>
+                        <option value="blocking">Blocking</option>
+                        <option value="setting">Setting</option>
+                        <option value="defense">Defense</option>
+                    </select>
+                    <button type="submit">Submit</button>
+                </form>
+                <canvas id="pastChart"></canvas>
+            </div>
+        </div>
+        
+        <hr>
+        <% if(currUser && currUser._id.equals(player.owner._id)) { %>
+        <form action="/players/<%= player._id %>" method="POST">
+            <label for="servePoints">Serve Points</label>
+            <input type="number" name="servePoints" max="10" min="0" required class="form-control mb-2">
+            
+            <label for="receivePoints">Receive Points</label>
+            <input type="number" name="receivePoints" max="10" min="0" required class="form-control mb-2">
+            
+            <label for="hittingPoints">Hitting Points</label>
+            <input type="number" name="hittingPoints" max="10" min="0" required class="form-control mb-2">
+            
+            <label for="blockingPoints">Blocking Points</label>
+            <input type="number" name="blockingPoints" max="10" min="0" required class="form-control mb-2">
+            
+            <label for="defensePoints">Defense Points</label>
+            <input type="number" name="defensePoints" max="10" min="0" required class="form-control mb-2">
+            
+            <label for="settingPoints">Setting Points</label>
+            <input type="number" name="settingPoints" max="10" min="0" required class="form-control mb-2">
+            
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <% } %>
+    </div>
+</body>
+
+                
+
+
+<script>
+    // Example data for the pie chart (present data)
+    const presentData = {
+       serve:  `<%= preData.serve%>`,
+  receive: `<%= preData.receive%>`,
+  hitting: `<%= preData.hitting%>`,
+  blocking: `<%= preData.blocking%>`,
+  setting: `<%= preData.setting%>`,
+  defense: `<%= preData.defense%>`
+    };
+
+    // Example data for the histogram (past data)
+    const pastData = `<%= servePointsArray%>`; // Example data points representing progress over time
+</script>
+<script>
+    const ctx = document.getElementById('progressChart').getContext('2d');
+    const presentChart = new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: Object.keys(presentData),
+            datasets: [{
+                data: Object.values(presentData),
+                backgroundColor: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#f8e2b0','#c1ebea'],
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Present Data Distribution'
+                }
+            }
+        }
+    });
+</script>
+<script>
+    const pastCtx = document.getElementById('pastChart').getContext('2d');
+    const pastChart = new Chart(pastCtx, {
+        type: 'bar',
+        data: {
+            labels: `<%= labels%>`, // Example labels
+            datasets: [{
+                label: '<%= searchTerm %> Points Over days',
+                data: pastData,
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            },
+            responsive: true,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                },
+                title: {
+                    display: true,
+                    text: 'Progress Over Time'
+                }
+            }
+        }
+    });
+</script>
+

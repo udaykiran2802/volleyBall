@@ -1,0 +1,64 @@
+<style>
+    .search-btn{
+      background-color: #fe424d;
+      color: white;
+      border-radius: 25px;
+      padding: 0 1rem 0 1rem;
+    }
+    .search-btn:hover{
+      background-color: #fe424d;
+      color: white;
+    }
+    .search-btn i {
+      display: inline;
+      margin-right: 0.5rem;
+    }
+    .search-inp{
+      border-radius: 25px;
+      padding: 0.5rem 3rem 0.5rem 3rem;
+      font-size: 1rem;
+    }
+  
+  
+  </style>
+  
+  
+  
+  <nav class="navbar navbar-expand-md bg-body-tertiary border-bottom sticky-top">
+      <div class="container-fluid">
+        <a class="navbar-brand mb-1"  href="/players"><i class="fa-regular fa-compass"></i><b style="color:  #fe424d;font-size: x-large;" >VolleyBall Club</b></a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+          <div class="navbar-nav">
+            <!-- <a class="nav-link" aria-current="page" href="/listings" >Home</a> -->
+            <!-- <a class="nav-link" href="/listings"><b></b></a> -->
+            <a class="nav-link" href="/videos">videos</a>
+            <a class="nav-link" href="/videos/new">add video</a>
+           
+          </div>
+          <div class="navbar-nav ms-auto">
+            <nav class="navbar bg-body-tertiary">
+              <div class="container-fluid">
+                <form action="/videos/search" method="get" class="d-flex" role="search">
+                  <input class="form-control me-2 search-inp" type="search" placeholder="Search players"  name="query" >
+                  <button class="btn search-btn" type="submit"><i class="fa-solid fa-magnifying-glass"></i>Search</button>
+                </form>
+              </div>
+            </nav>
+          </div>
+          <div class="navbar-nav ms-auto">
+            <a class="nav-link" href="/players/new">Add Your profile</a>
+  
+            <% if(!currUser){ %>
+            <a class="nav-link " aria-current="page" href="/signup"><b>Signup</b></a>
+            <a class="nav-link" href="/login"><b>login</b></a>
+              <% }else{ %>
+  
+            <a class="nav-link" href="/logout"><b>logout</b></a>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </nav>

@@ -1,0 +1,97 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+    <div class="index">
+        <div id="filters-container" class="container-fluid">
+            <div id="filters" class="row">
+                <div class="col">
+                    <div class="filters-wrapper">
+                        <div  class="filter-item">
+                            <% if (currPath==="/videos/exercise") {%>
+                            <a href="/videos/exercise"  style="color: #fe424d;">
+                                <div><img src="/images/exercise.png" alt="exercise" class="filter-icon"></div>
+                                <p>Exercise</p>
+                            </a>
+                            <% }else{ %>
+                                    <a href="/videos/exercise"  >
+                                        <div><img src="/images/exercise.png" alt="exercise" class="filter-icon"></div>
+                                        <p>Exercise</p>
+                                    </a>
+                            <% } %>
+                        </div>
+                        <div class="filter-item" >
+                            <% if (currPath==="/videos/match") {%>
+                            <a href="/videos/match" style="color: #fe424d;">
+                                <div><img src="/images/match.png" alt="match" class="filter-icon"></div>
+                                <p>Match</p>
+                            </a>
+                            <% }else{ %>
+                                <a href="/videos/match" >
+                                    <div><img src="/images/match.png" alt="match" class="filter-icon"></div>
+                                    <p>Match</p>
+                                </a>
+                                <% } %>
+                        </div>
+                        <div class="filter-item">
+                            <% if (currPath==="/videos/others") {%>
+                            <a href="/videos/others" class="filter-item" style="color: #fe424d;">
+                                <div><img src="/images/volleyball.png" alt="volleyball" class="filter-icon"></div>
+                                <p>Others</p>
+                            </a>
+                            <% }else{ %>
+                                <a href="/videos/others" class="filter-item">
+                                    <div><img src="/images/volleyball.png" alt="volleyball" class="filter-icon"></div>
+                                    <p>Others</p>
+                                </a>
+                                <% } %>
+                        </div>
+                        
+                        <!-- Add more filter items as needed -->
+                    </div>
+                    <button id="scroll-right" class="scroll-btn">→</button>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+        <div class="row allvideos row-cols-lg-3 row-cols-md-2 row-cols-sm-1">      
+            <% if (allVideos.length > 0) { %>
+                <% for (const video of allVideos) { %>
+                   
+                        <div class="card-video  ">
+                          
+                                <!-- Use <%- %> to render the embedHtml as HTML -->
+                                <div class="video-container">
+                                    <%- video.embedHtml %>
+                                </div>
+                           
+                            <div class="card-body">
+                                <p class="card-text d-inline-block text-truncate" style="max-width: calc(100% - 120px);">
+                                    <b><%= video.title %></b>
+                                </p>
+                                <a href="/videos/<%= video._id  %>" class="btn btn-secondary float-end">Description</a>
+                            </div>
+                        </div>
+                  
+                <% } %>
+            <% } else { %>
+                <div class="noListing">
+                    <h2>No Videos Available!</h2>
+                    <p>Why not add the first one <i class="fa-solid fa-face-smile-wink"></i></p>
+                    <a href="/videos/new" class="btn btn-primary">Add a video</a> 
+                </div>
+            <% } %>
+        </div>
+    </div>
+</body>
+<script>
+    
+    document.getElementById('scroll-right').addEventListener('click', function() {
+    const wrapper = document.querySelector('.filters-wrapper');
+    wrapper.scrollBy({
+        left: 200, // Adjust this value to control how far you scroll
+        behavior: 'smooth'
+    });
+});
+
+</script>

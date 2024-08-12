@@ -1,0 +1,82 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+    <div class="showListing">
+        <div class="row">
+            <div class="col-8 offset-3 mt-3">
+                <h3><b><%= video.title %></b></h3>
+            </div>
+            
+                <div class="card col-6 offset-3 listing-card">
+                    <div class="video-container">
+                        <%- video.embedHtml %>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">
+                            <b> uploaded by</b>  <i><%= video.author.username  %></i></p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p class="card-text "> <b>Team A:</b><%= video.team1 %> </p>
+                                </div>
+                                <div class="col-6">
+                                    <p class="card-text "><b>Team B:</b><%= video.team2 %> </p> 
+                                </div>
+                            </div>
+                            
+                            <p class="card-text mt-3"><b>MVP:</b><%= video.mvp %> 
+                        </p>
+                    </div>
+               
+            
+            
+                    <% if(currUser && currUser._id.equals(video.author._id)) { %>
+                        <div class="row">
+                            <div class="col-6 offset-0 mb-3 mt-3 ">
+                                <a href="/videos/<%= video._id  %>/edit" class="btn btn-outline-primary ">Edit this description</a>
+                            </div>
+                            <div class="col-6 mb-3 mt-3 ">
+                            
+                                  <form action="/videos/<%= video._id %>?_method=DELETE" method="POST" class="delete-form">
+                                    <button type="button" class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmationModal" data-listing-id="<%= video._id %>">Delete this Video</button>
+                                  </form>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+        </div>
+    
+                <hr>
+       
+</body>
+<script>
+   document.addEventListener('DOMContentLoaded', () => {
+  const deleteButtons = document.querySelectorAll('.delete-btn');
+  const confirmationModal = new bootstrap.Modal(document.getElementById('confirmationModal'));
+  let listingIdToDelete = null;
+
+  deleteButtons.forEach(button => {
+    button.addEventListener('click', (event) => {
+      event.preventDefault(); // Prevent default button behavior
+
+      listingIdToDelete = button.getAttribute('data-listing-id');
+      
+      // Show the confirmation modal
+      confirmationModal.show();
+    });
+  });
+
+  document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+    if (listingIdToDelete) {
+      // Find the form associated with the delete button
+      const form = document.querySelector(`.delete-btn[data-listing-id="${listingIdToDelete}"]`).closest('.delete-form');
+      if (form) {
+        form.submit(); // Submit the form, which will trigger the backend route
+      }
+    }
+  });
+});
+
+
+</script>
+
+
+

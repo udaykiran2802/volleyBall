@@ -1,0 +1,36 @@
+<% layout("/layouts/boilerplate") %>
+
+<body>
+    
+    <div class="index">
+        <div class="row  row-cols-1 row-cols-lg-3 row-cols-md-2 row-cols-sm-1 allCards">      
+            <% if (allPlayers.length > 0){ %>
+                <% for(player of allPlayers){ %>
+                    <a href="/players/<%= player._id  %>" style="text-decoration: none;">
+                    <div class="card cardL listing-cards " style="width: 20rem;">
+                        <div class="image-container">
+                            <img src="<%=player.image.url  %>" class="card-img-top " alt="lising_image" style="height: 20rem;">
+                            <div class="card-img-overlay ">click me</div>
+                        </div>
+                        
+                        <div class="card-body mb-1 ms-2">
+                            <p class="card-text">
+                                <b><%= player.name %></b>
+                            </p>
+                        </div>
+                    </div>
+                    </a>
+                <% } %>
+                <% }else{ %>
+                    <div class="noListing" >
+                        <h2>No Player Profiles Available!</h2>
+                        <p>Why not be the first player to add <i class="fa-solid fa-face-smile-wink"></i></p>
+                        <a href="/players/new" class="btn btn-primary">Add a profile</a> 
+                    </div>
+                   
+                    <% } %>
+            
+        </div>
+            
+    </div>
+</body>

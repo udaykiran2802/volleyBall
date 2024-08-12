@@ -1,0 +1,63 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+    <div class="index">
+        <div class="row mt-3">
+            <div class="col-8 offset-2">
+                <h3> Edit this player profile </h3>
+                <br>
+        <form action="/players/<%=player._id  %>?_method=PUT" method="post" novalidate enctype="multipart/form-data" class="needs-validation">
+            <div class="mb-3">
+                <label for="name" class="from-label">Name</label>
+                <input type="text" name="player[name]" class="form-control" value="<%=player.name  %>" required>
+                <div class="invalid-feedback">Player Name should be valid </div>
+            </div>
+            
+            <div class="mb-3">
+                Past Profile image   <br>
+                <img src="<%= originalImageUrl  %>" alt="">
+            </div>
+            
+            <div class="mb-3">
+                <label for="title" class="from-label">Upload New Image </label>
+                <input type="file" name="image" class="form-control" value="<%=player.image.url %>"  >
+                <!-- <div class="invalid-feedback">Image link should be valid </div> -->
+            </div>
+            <div class="row">
+                <div class="mb-3 col-md-4">
+                    <label for="scholarID" class="from-label">ScholarID</label>
+                    <input  name="player[scholarID]" class="form-control" value="<%=player.scholarID %>" required/>
+                    <div class="invalid-feedback">please enter a valid scholarID</div>
+                </div>
+                <div class="mb-3 col-md-8">
+                    <label for="branch" class="from-label">Branch</label>
+                    <input type="text" name="player[branch]" class="form-control" value="<%= player.branch %>" required/>
+                    <div class="invalid-feedback">please add a valid branch </div>
+                </div>
+                <div class="mb-3">
+                    
+                    <select class="form-select form-select-sm mb-3"name="player[position]" id="category" aria-label="Large select example" required>
+                        <option selected  >Select your Position</option>
+                        <option value="Hitter">Hitter</option>
+                        <option value="Setter">Setter</option>
+                        <option value="Libero">Libero</option>
+                        <option value="AllRounder">All Rounder</option>
+                        </select>
+                        <label for="size"></label>
+                        <select class="form-select form-select-sm mb-3"name="player[size]" id="category" aria-label="Large select example">
+                            <option selected  >select your T Shirt Size</option>
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            </select>
+                    </div>
+            <button class="btn btn-dark edit-btn mt-3">edit</button>
+        </form>
+            </div>
+        </div>
+        
+        
+    </div>
+    
+</body>

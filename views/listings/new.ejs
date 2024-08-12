@@ -1,0 +1,87 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+    <div class="row ">
+        <div class="col-8 offset-2">
+            <h3> Create a new Accommodation </h3>
+    <form action="/listings" method="post" class="needs-validation" novalidate enctype="multipart/form-data">
+        <div class="mb-3">
+            <label for="title" class="from-label">Title</label>
+            <input type="text" name="listing[title]" class="form-control" required />
+            <div class="valid-feedback">Title looks GOOD! </div>
+            <div class="invalid-feedback">please add a valid title </div>
+        </div>
+        <div class="mb-3">
+            <label for="description" class="from-label">Description</label>
+            <textarea name="listing[description]" class="form-control" required ></textarea>  
+            <div class="invalid-feedback">please add a short description about place</div>
+        </div>
+        
+        <!-- <div class="mb-3">
+            <label for="image" class="from-label">Image URL</label>
+            <input type="text" name="listing[image][url]" class="form-control" >
+
+        </div> -->
+        <!-- <div class="mb-3">
+            <label for="imageUrl" class="from-label">Image URL</label>
+            <input type="text" name="listing[image][url]" class="form-control"  >
+            <div class="invalid-feedback">please add a valid image URL</div>
+        </div>
+        <div class="mb-3">
+            <label for="filename" class="from-label">Alternative Text</label>
+            <input type="text" name="listing[image][filename]" class="form-control"  >
+            <div class="invalid-feedback">please add alternative text for the image</div>
+        </div> -->
+        <div class="mb-3">
+            <label for="imageUrl" class="from-label">Upload Image</label>
+            <input type="file" name="listing[image][url]" class="form-control" required >
+            <div class="invalid-feedback">please add a valid image </div>
+        </div>
+        <div class="mb-3">
+            
+        <select class="form-select form-select-sm mb-3"name="listing[category]" id="category" aria-label="Large select example">
+            <option selected  >Open this select menu</option>
+            <option value="Iconic Cities">Iconic Cities</option>
+            <option value="mountains">Mountains</option>
+            <option value="castles">castles</option>
+            <option value="Amazing Pools">Amazing Pools</option>
+            <option value="camping">Camping</option>
+            <option value="farms">farms</option>
+            <option value="arctic">arctic</option>
+            <option value="domes">Domes</option>
+            <option value="boats">Boats</option>\
+            <option value="rooms">Rooms</option>
+          </select>
+          
+        </div>
+
+      
+        <div class="row">
+            <div class="mb-3 col-md-4">
+                <label for="price" class="from-label">Price</label>
+            <input  name="listing[price]" class="form-control" required />
+            <div class="invalid-feedback">please add a valid price</div>
+            </div>
+            
+            <div class="mb-3 col-md-8">
+                <label for="location" class="from-label">Location</label>
+            <input type="text" name="listing[location]" class="form-control" required />
+            <div class="invalid-feedback">please add a valid location </div>
+            </div>
+        </div>
+        
+        
+        <div class="mb-3">
+            <label for="country" class="from-label">Country</label>
+        <input type="text" name="listing[country]" class="form-control" required />
+        <div class="invalid-feedback">please add a valid country </div>
+        </div>
+       
+        
+        <button class="btn btn-dark edit-btn mt-3">ADD</button>
+    </form>
+        </div>
+    </div>
+
+    
+    
+</body>

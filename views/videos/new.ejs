@@ -1,0 +1,49 @@
+<% layout("/layouts/boilerplate") %>
+<body>
+    <div class="index">
+        <div class="row">
+            <div class="col-8 offset-2">
+                <h3>Create a New Video</h3>
+                <form action="/videos" method="post" class="needs-validation" novalidate>
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" name="video[title]" class="form-control" required />
+                        <div class="valid-feedback">Title looks GOOD!</div>
+                        <div class="invalid-feedback">Please add a valid title</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="team1" class="form-label">Team A</label>
+                        <textarea name="video[team1]" class="form-control" required></textarea>
+                        <div class="invalid-feedback">Please add names of Team A</div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="team2" class="form-label">Team B</label>
+                        <textarea name="video[team2]" class="form-control" required></textarea>
+                        <div class="invalid-feedback">Please add names of Team B</div>
+                    </div>
+                    <div class="row">
+                        <div class="mb-3 col-md-4">
+                            <label for="mvp" class="form-label">MVP</label>
+                            <input name="video[mvp]" class="form-control" required />
+                            <div class="invalid-feedback">Please enter a valid name for MVP</div>
+                        </div>
+                        <div class="mb-3 col-md-8">
+                            <label for="url" class="form-label">YouTube Video URL</label>
+                            <input type="url" id="url" name="url" placeholder="https://www.youtube.com/watch?v=..." class="form-control" required>
+                            <div class="invalid-feedback">Please add a valid video URL</div>
+                        </div>
+                    </div>
+                    <select class="form-select form-select-sm mb-3"name="video[category]" id="category" aria-label="Large select example">
+                        <option selected  >Open this select menu</option>
+                        <option value="match">Match videos</option>
+                        <option value="exercise">Exercise videos</option>
+                        <option value="others">others</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-dark edit-btn mt-3">ADD</button>
+                </form>
+    
+            </div>
+        </div>
+    </div>
+</body>
