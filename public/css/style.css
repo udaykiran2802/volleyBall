@@ -239,7 +239,7 @@ min-height:71.6vh;
 #filters-container:hover .scroll-btn {
   display: block;
 }
-.pieChart{
+/* .pieChart{
   height: 50%;
   width: 50%;
 
@@ -247,7 +247,7 @@ min-height:71.6vh;
 .barChart{
   width: 50%;
   
-}
+} */
 .pro a {
   text-decoration: none;
 }

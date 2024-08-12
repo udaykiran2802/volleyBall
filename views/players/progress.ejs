@@ -1,11 +1,14 @@
 <% layout("/layouts/boilerplate") %>
 <body>
     <div class="index">
+        
         <div class="row">
+            <!-- Pie Chart Section -->
             <div class="pieChart card col-12 col-md-6 mb-3">
                 <canvas id="progressChart"></canvas>
             </div>
         
+            <!-- Bar Chart Section -->
             <div class="barChart card col-12 col-md-6 mb-3">
                 <form action="/players/<%= player._id %>/progress" method="get">
                     <select class="form-select form-select-sm mb-3" name="bar" id="category" aria-label="Large select example">
@@ -17,12 +20,12 @@
                         <option value="setting">Setting</option>
                         <option value="defense">Defense</option>
                     </select>
-                    <button type="submit">Submit</button>
+                    <button type="submit " class="btn btn-primary btn-sm btn-md-lg btn-sm">Submit</button>
                 </form>
                 <canvas id="pastChart"></canvas>
             </div>
         </div>
-        
+            
         <hr>
         <% if(currUser && currUser._id.equals(player.owner._id)) { %>
         <form action="/players/<%= player._id %>" method="POST">

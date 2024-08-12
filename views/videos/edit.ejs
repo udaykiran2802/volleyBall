@@ -1,8 +1,8 @@
 <% layout("/layouts/boilerplate") %>
 <body>
     <div class="index">
-        <div class="row">
-            <div class="col-8 offset-2">
+        <div class="row justify-content-center">
+            <div class="col-12 justify-content-center col-md-6">
                 <h3>Create a New Video</h3>
                 <form action="/videos/<%=video._id%>?_method=PUT" method="post" class="needs-validation" novalidate>
                     <div class="mb-3">
@@ -40,7 +40,10 @@
                         <option value="others">others</option>
                         </select>
                     </div>
-                    <button type="submit" class="btn btn-dark edit-btn mt-3">ADD</button>
+                    <div class="text-center ">
+                        <button type="submit" class="btn col-12  col-md-6 btn-dark edit-btn mt-3">ADD</button>
+                    </div>
+                    
                 </form>
     
             </div>

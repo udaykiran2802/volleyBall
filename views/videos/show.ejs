@@ -1,12 +1,11 @@
 <% layout("/layouts/boilerplate") %>
 <body>
     <div class="showListing">
-        <div class="row">
-            <div class="col-8 offset-3 mt-3">
-                <h3><b><%= video.title %></b></h3>
-            </div>
+        <div class="row justify-content-center">
+        
             
-                <div class="card col-6 offset-3 listing-card">
+                <div class="card col-12 col-md-6 listing-card">
+                  <h3 class=""><b><%= video.title %></b></h3>
                     <div class="video-container">
                         <%- video.embedHtml %>
                     </div>
@@ -18,7 +17,7 @@
                                     <p class="card-text "> <b>Team A:</b><%= video.team1 %> </p>
                                 </div>
                                 <div class="col-6">
-                                    <p class="card-text "><b>Team B:</b><%= video.team2 %> </p> 
+                                    <p class="card-text  text-center"><b>Team B:</b><%= video.team2 %> </p> 
                                 </div>
                             </div>
                             
@@ -30,10 +29,10 @@
             
                     <% if(currUser && currUser._id.equals(video.author._id)) { %>
                         <div class="row">
-                            <div class="col-6 offset-0 mb-3 mt-3 ">
+                            <div class="col-6  mb-3  mt-3 ">
                                 <a href="/videos/<%= video._id  %>/edit" class="btn btn-outline-primary ">Edit this description</a>
                             </div>
-                            <div class="col-6 mb-3 mt-3 ">
+                            <div class="col-6 mb-3 text-center  mt-3 ">
                             
                                   <form action="/videos/<%= video._id %>?_method=DELETE" method="POST" class="delete-form">
                                     <button type="button" class="btn btn-danger delete-btn" data-bs-toggle="modal" data-bs-target="#confirmationModal" data-listing-id="<%= video._id %>">Delete this Video</button>
