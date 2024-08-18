@@ -12,7 +12,7 @@ const {storage}= require('../cloudConfig.js');
 const upload = multer({storage});
 // 
 const wrapAsync = require('../utils/wrapAsync.js');
-const {isLogggedin, isVideoOwner, validatePlayer} = require('../middleware.js');
+const {isLogggedin, isVideoOwner} = require('../middleware.js');
 // 
 const Player = require('../models/player.js');
 const Video = require('../models/video.js'); 
@@ -147,18 +147,42 @@ router.get('/:id/edit',isLogggedin, isVideoOwner,wrapAsync(async (req, res, next
 
     res.render('../views/videos/edit.ejs', { video });
 }));
-
-router.put('/:id',isLogggedin,isVideoOwner, wrapAsync(async (req, res) => {
+router.put('/:id', isLogggedin, isVideoOwner, wrapAsync(async (req, res) => {
     let { id } = req.params;
-    let video = await Video.findByIdAndUpdate(id, { ...req.body.video });
+    const { url, video } = req.body;
+    console.log(id);
+
+    console.log("video edit request");
+    console.log(req.body);
+
+    // Improved regex to handle different YouTube URL formats
+    const videoIdMatch = url.match(/(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+    const videoId = videoIdMatch ? videoIdMatch[1] : null;
+
+    if (!videoId) {
+        req.flash("error", "Invalid YouTube URL");
+        return res.redirect(`/videos/${id}/edit`);
+    }
+
+    let videoU = await Video.findByIdAndUpdate(id, { 
+        title: video.title,
+        team1: video.team1,
+        team2: video.team2,
+        mvp: video.mvp,
+        url: url,
+        embedHtml: `<iframe width="512" height="288" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`,
+        author: req.user._id, // Assuming you want to associate the video with the logged-in user
+        category: video.category,
+    });
     
-    await video.save();
-    
+    await videoU.save();
+
     console.log("------------------------------------------------");
-    // console.log(req.body.listing);
-    req.flash("success", "video description UPDATED successfully!");
+    req.flash("success", "Video description updated successfully!");
     res.redirect(`/videos/${id}`);
 }));
+
+
 router.delete('/:id',isLogggedin,isVideoOwner,wrapAsync(async (req, res) => {
     let { id } = req.params;
     try {

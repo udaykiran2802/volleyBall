@@ -1,26 +1,35 @@
 <% if(success && success.length) { %>
-<div class="alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
-    <%= success %>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+<div class=" row justify-content-center">
+    <div class="alert alert-success alert-dismissible fade text-center justify-content-center show col-md-6 col-10 " role="alert">
+        <%= success %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
 </div>
 <% } %>
 
 <% if(fail && fail.length) { %>
-    <div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
-        <%= fail %>
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    <div class=" row justify-content-center">
+        <div class="alert alert-danger alert-dismissible fade show col-md-6 col-10 " role="alert">
+            <%= fail %>
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
     </div>
+    
     <% } %>
 
     <% if(error && error.length) { %>
-        <div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
-            <%= error %>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        <div class=" row justify-content-center">\
+            <div class="alert alert-danger alert-dismissible fade show col-md-6 col-10 " role="alert">
+                <%= error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
         </div>
+        
         <% } %>
 
         <% if(encourage && encourage.length) { %>
-            <div class="alert  alert-dismissible fade show col-6 offset-3" role="alert" style=" background-color:  #218cff ;
+            <div class=" row justify-content-center">
+                <div class="alert  alert-dismissible fade show col-md-6 col-10 " role="alert" style=" background-color:  #218cff ;
             color: white;
             font-size: 16px;
             text-align: center;
@@ -28,4 +37,6 @@
                 <%= encourage %>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
+            </div>
+            
             <% } %>
