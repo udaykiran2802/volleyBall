@@ -140,6 +140,50 @@ app.use('/videos',videosRouter);
 app.use("/players/:id/reviews",reviewsRouter);
 app.use("/",userRouter);
 
+// if ('serviceWorker' in navigator) {
+//     navigator.serviceWorker.register('/service-worker.js')
+//     .then(function(registration) {
+//         console.log('Service Worker registered with scope:', registration.scope);
+//     })
+//     .catch(function(error) {
+//         console.error('Service Worker registration failed:', error);
+//     });
+// }
+// function askNotificationPermission() {
+//     return new Promise(function(resolve, reject) {
+//         const permissionResult = Notification.requestPermission(function(result) {
+//             resolve(result);
+//         });
+
+//         if (permissionResult) {
+//             permissionResult.then(resolve, reject);
+//         }
+//     }).then(function(permissionResult) {
+//         if (permissionResult !== 'granted') {
+//             throw new Error('Permission not granted for notifications');
+//         }
+//     });
+// }
+
+// askNotificationPermission();
+// function subscribeUserToPush() {
+//     return navigator.serviceWorker.ready.then(function(registration) {
+//         return registration.pushManager.subscribe({
+//             userVisibleOnly: true,
+//             applicationServerKey: urlBase64ToUint8Array('<Your Public VAPID Key>')
+//         });
+//     }).then(function(subscription) {
+//         console.log('User is subscribed:', subscription);
+//         // Send the subscription object to your server for storage
+//         // Use a POST request to save this subscription on your server
+//     }).catch(function(error) {
+//         console.error('Failed to subscribe the user: ', error);
+//     });
+// }
+
+// subscribeUserToPush();
+
+
 
 
 
