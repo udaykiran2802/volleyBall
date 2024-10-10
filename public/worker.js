@@ -43,20 +43,3 @@ self.addEventListener('notificationclick', function(event) {
 });  
 
 // Fetch event to handle caching, but bypass Cloudinary and upload requests
-self.addEventListener('fetch', (event) => {
-    const url = new URL(event.request.url);
-
-    // Check if the request is for Cloudinary or your upload route
-    if (url.pathname.startsWith('/players/'||'/players/:id') || url.hostname === 'api.cloudinary.com') {
-        // Don't handle this request in the Service Worker
-        return;
-    }
-
-    // Handle other requests (like caching)
-    event.respondWith(
-        caches.match(event.request).then((response) => {
-            // Return cached response if found, else fetch the request
-            return response || fetch(event.request);
-        })
-    );
-});

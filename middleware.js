@@ -84,7 +84,7 @@ module.exports.isReviewAuthor =async (req, res, next)=>{
     let review = await Review.findById(reviewId);
     if(res.locals.currUser&&!review.author._id.equals(res.locals.currUser._id)) {
         req.flash("error", "You dont have permission to DO SO! Becuz You are not the Author!!");
-       return res.redirect(`/players/${id}`);
+        return res.redirect(`/players/${id}`);
     }
     next();
 }
