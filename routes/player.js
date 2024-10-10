@@ -11,6 +11,8 @@ const wrapAsync = require('../utils/wrapAsync.js');
 const {isLogggedin, isOwner,validateListing, validatePlayer} = require('../middleware.js');
 // 
 const Player = require('../models/player.js');
+const Subscription = require('../models/subscription.js'); 
+const webpush = require('web-push'); 
 
 app.use(express.urlencoded({ extended: true }));
 
@@ -20,7 +22,7 @@ router.get('/',wrapAsync(async (req, res) => {
     console.log(res.locals.currPath);
     res.render("../views/players/index.ejs", { allPlayers });
 }));
-router.post('/',isLogggedin, upload.single('image'),validatePlayer, wrapAsync(async (req, res) => {
+router.post('/',isLogggedin, upload.single('image'), wrapAsync(async (req, res) => {
     console.log("hi");
     console.log(req.body);  // Log the body of the request
     console.log(req.file);  // Log the file object
@@ -38,6 +40,25 @@ router.post('/',isLogggedin, upload.single('image'),validatePlayer, wrapAsync(as
     newPlayer.owner = req.user._id;// prarti listing lo owner name display cheydAaniki use avthundi, user by defualt passport a create chestundi
     newPlayer.image= {url, filename};
     await newPlayer.save();
+    const subscriptions = await Subscription.find({}); // Assuming you have a Subscription model 
+ 
+    if (subscriptions.length > 0) { 
+        const payload = JSON.stringify({ 
+            title: 'NEW Profile Created!', 
+            body: `A NEW Profile is created by ${req.user.username}`, 
+            icon: '/images/volleyballA.png' 
+        }); 
+ 
+        // Send notification to each subscription 
+        const notificationPromises = subscriptions.map(sub => { 
+            return webpush.sendNotification(sub, payload).catch(err => { 
+                console.error('Error sending push notification:', err); 
+            }); 
+        }); 
+ 
+        // Wait for all notifications to be sent 
+        await Promise.all(notificationPromises); 
+    }
     req.flash("success", "new Player saved successfully!");
     res.redirect("/players");
 }));
@@ -215,7 +236,7 @@ router.get('/:id/edit',isLogggedin, isOwner,wrapAsync(async (req, res, next) => 
     res.render('../views/players/edit.ejs', { player , originalImageUrl});
 }));
 
-router.put('/:id',isLogggedin,isOwner, upload.single('image'),validatePlayer, wrapAsync(async (req, res) => {
+router.put('/:id',isLogggedin,isOwner, upload.single('image'), wrapAsync(async (req, res) => {
     let { id } = req.params;
     let player = await Player.findByIdAndUpdate(id, { ...req.body.player });
     if(typeof req.file !== "undefined"){
@@ -223,6 +244,25 @@ router.put('/:id',isLogggedin,isOwner, upload.single('image'),validatePlayer, wr
     let filename = req.file.filename;
     player.image= {url, filename};
     await player.save();
+    }
+    const subscriptions = await Subscription.find({}); // Assuming you have a Subscription model 
+ 
+    if (subscriptions.length > 0) { 
+        const payload = JSON.stringify({ 
+            title: 'Profile is Edited!', 
+            body: `"${req.body.player.name}" Profile is Edited by ${req.user.username}`, 
+            icon: '/images/volleyballA.png' 
+        }); 
+ 
+        // Send notification to each subscription 
+        const notificationPromises = subscriptions.map(sub => { 
+            return webpush.sendNotification(sub, payload).catch(err => { 
+                console.error('Error sending push notification:', err); 
+            }); 
+        }); 
+ 
+        // Wait for all notifications to be sent 
+        await Promise.all(notificationPromises); 
     }
     console.log("------------------------------------------------");
     // console.log(req.body.listing);

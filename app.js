@@ -10,6 +10,9 @@ const mongoose = require('mongoose');
 const path = require('path');
 const ExpressError = require('./utils/expressError.js');
 
+const webpush = require('web-push'); 
+const bodyParser = require('body-parser'); 
+const PushNotifications = require("node-pushnotifications");
 
 const listingRouter = require('./routes/listing.js');
 const reviewsRouter = require('./routes/review.js'); 
@@ -18,6 +21,8 @@ const playersRouter =require('./routes/player.js');
 const videosRouter = require('./routes/video.js'); 
 
 const Player = require('./models/player.js');
+const Subscription = require('./models/subscription.js'); 
+const {isLogggedin, isVideoOwner} = require('./middleware.js');
 
 
 const session = require('express-session');
@@ -75,7 +80,7 @@ const sessionOptns= {
         expires: Date.now()+7*24*60*60*1000,
         maxAge:7*24*60*60*1000, 
         httpOnly: true,
-    },
+    },  
 };
 
 app.use(session(sessionOptns));
@@ -89,6 +94,71 @@ passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
 
+app.use(bodyParser.json()); 
+app.use(function (req, res, next) { 
+    // Website you wish to allow to connect 
+    res.setHeader("Access-Control-Allow-Origin", "*"); 
+   
+    // Request methods you wish to allow 
+    res.setHeader( 
+      "Access-Control-Allow-Methods", 
+      "GET, POST, OPTIONS, PUT, PATCH, DELETE" 
+    ); 
+   
+    // Request headers you wish to allow 
+    res.setHeader("Access-Control-Allow-Headers", "*"); 
+   
+    // Set to true if you need the website to include cookies in the requests sent 
+    // to the API (e.g. in case you use sessions) 
+    res.setHeader("Access-Control-Allow-Credentials", true); 
+   
+    // Pass to next layer of middleware 
+    next(); 
+  }); 
+const publicVapidKey = 'BCxb0euQVTNhGOanwQGkhmLp31SB-5LMaZjcrtF6-NspJ10rOWxHchg6Um8ahBxrlz7SwG-pvyVZbQstFlxdSOo'; 
+const privateVapidKey = process.env.PRIVATE_VAPID_KEY; 
+// identify who is sending push notifications 
+webpush.setVapidDetails('mailto:udaykiran2822@gmail.com', publicVapidKey,privateVapidKey); 
+
+app.post('/subscribe',isLogggedin,  async (req, res) => { 
+    const subscription = req.body;  // Get the subscription object sent from the frontend 
+    const userId =  req.user._id;   
+     
+    try { 
+        // Check if a subscription already exists for this user 
+        let existingSubscription = await Subscription.findOne({ userId: userId }); 
+ 
+        if (existingSubscription) { 
+            // If subscription exists, update it 
+            existingSubscription.endpoint = subscription.endpoint; 
+            existingSubscription.keys = subscription.keys; 
+            await existingSubscription.save(); 
+        } else { 
+            // If no subscription exists, create a new one 
+            const newSubscription = new Subscription({ 
+                endpoint: subscription.endpoint, 
+                keys: subscription.keys, 
+                userId: userId 
+            }); 
+            await newSubscription.save(); 
+        } 
+ 
+        res.status(201).json({ message: 'Subscription saved successfully!' }); 
+    } catch (error) { 
+        console.error('Error saving subscription:', error); 
+        res.status(500).json({ error: 'Failed to save subscription' }); 
+    } 
+});  
+app.post('/unsubscribe',isLogggedin, async (req, res) => { 
+    const userId =  req.user._id;  
+    try { 
+        await Subscription.findOneAndDelete({ userId: userId }); 
+        res.status(200).json({ message: 'Subscription deleted successfully!' }); 
+    } catch (error) { 
+        console.error('Error deleting subscription:', error); 
+        res.status(500).json({ error: 'Failed to delete subscription' }); 
+    } 
+}); 
 
 
   
@@ -139,51 +209,6 @@ app.use("/players",playersRouter);
 app.use('/videos',videosRouter);
 app.use("/players/:id/reviews",reviewsRouter);
 app.use("/",userRouter);
-
-// if ('serviceWorker' in navigator) {
-//     navigator.serviceWorker.register('/service-worker.js')
-//     .then(function(registration) {
-//         console.log('Service Worker registered with scope:', registration.scope);
-//     })
-//     .catch(function(error) {
-//         console.error('Service Worker registration failed:', error);
-//     });
-// }
-// function askNotificationPermission() {
-//     return new Promise(function(resolve, reject) {
-//         const permissionResult = Notification.requestPermission(function(result) {
-//             resolve(result);
-//         });
-
-//         if (permissionResult) {
-//             permissionResult.then(resolve, reject);
-//         }
-//     }).then(function(permissionResult) {
-//         if (permissionResult !== 'granted') {
-//             throw new Error('Permission not granted for notifications');
-//         }
-//     });
-// }
-
-// askNotificationPermission();
-// function subscribeUserToPush() {
-//     return navigator.serviceWorker.ready.then(function(registration) {
-//         return registration.pushManager.subscribe({
-//             userVisibleOnly: true,
-//             applicationServerKey: urlBase64ToUint8Array('<Your Public VAPID Key>')
-//         });
-//     }).then(function(subscription) {
-//         console.log('User is subscribed:', subscription);
-//         // Send the subscription object to your server for storage
-//         // Use a POST request to save this subscription on your server
-//     }).catch(function(error) {
-//         console.error('Failed to subscribe the user: ', error);
-//     });
-// }
-
-// subscribeUserToPush();
-
-
 
 
 

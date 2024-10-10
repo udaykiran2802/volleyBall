@@ -16,6 +16,8 @@ const {isLogggedin, isVideoOwner} = require('../middleware.js');
 // 
 const Player = require('../models/player.js');
 const Video = require('../models/video.js'); 
+const Subscription = require('../models/subscription.js'); 
+const webpush = require('web-push'); 
 
 
 
@@ -76,6 +78,26 @@ router.post('/', wrapAsync(async (req, res) => {
         // player.videos.push(newVideo);
         // Save the video document to the database
         await newVideo.save();
+         // Send notification only if it hasn't been sent yet 
+            const subscriptions = await Subscription.find({}); // Assuming you have a Subscription model 
+
+            if (subscriptions.length > 0) { 
+                const payload = JSON.stringify({ 
+                    title: 'New Video Added', 
+                    body: `A new video "${newVideo.title}" has been uploaded! by ${req.user.username}`, 
+                    icon: '/images/volleyballA.png' 
+                }); 
+
+                // Send notification to each subscription 
+                const notificationPromises = subscriptions.map(sub => { 
+                    return webpush.sendNotification(sub, payload).catch(err => { 
+                        console.error('Error sending push notification:', err); 
+                    }); 
+                }); 
+
+                // Wait for all notifications to be sent 
+                await Promise.all(notificationPromises); 
+            }
         // await player.save();
         req.flash("success", "New Video added successfully!");
         res.redirect("/videos");
@@ -176,6 +198,25 @@ router.put('/:id', isLogggedin, isVideoOwner, wrapAsync(async (req, res) => {
     });
     
     await videoU.save();
+    const subscriptions = await Subscription.find({}); // Assuming you have a Subscription model 
+ 
+    if (subscriptions.length > 0) { 
+        const payload = JSON.stringify({ 
+            title: 'Video is edited', 
+            body: `Changes occured in Video "${video.title}"! changes done by ${req.user.username}`, 
+            icon: '/images/volleyballA.png' 
+        }); 
+ 
+        // Send notification to each subscription 
+        const notificationPromises = subscriptions.map(sub => { 
+            return webpush.sendNotification(sub, payload).catch(err => { 
+                console.error('Error sending push notification:', err); 
+            }); 
+        }); 
+ 
+        // Wait for all notifications to be sent 
+        await Promise.all(notificationPromises); 
+    }
 
     console.log("------------------------------------------------");
     req.flash("success", "Video description updated successfully!");

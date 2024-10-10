@@ -58,7 +58,7 @@ module.exports.validateListing = (req, res, next) => {
 };
 
 module.exports.validatePlayer = (req, res, next) => {
-    let { error } = playerSchema.validate(req.body);
+    let { error } = playerSchema.validate(req.body.player);
     console.log(error);
     if (error) {
         let errMsg = error.details.map((el) => el.message).join(",");

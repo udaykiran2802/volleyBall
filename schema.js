@@ -38,3 +38,13 @@ module.exports.playerSchema = Joi.object({
      
     }).required()
 });
+
+const subscriptionSchema = Joi.object({ 
+    endpoint: Joi.string().uri().required(), 
+    keys: Joi.object({ 
+        p256dh: Joi.string().required(), 
+        auth: Joi.string().required() 
+    }).required() 
+}); 
+ 
+module.exports = subscriptionSchema; 

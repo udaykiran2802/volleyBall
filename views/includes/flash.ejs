@@ -40,3 +40,15 @@
             </div>
             
             <% } %>
+
+
+<% if(success && success.length) { %>
+    <script src="/client.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+        
+            subscribeUserToNotifications();  // Call the function to subscribe to notifications
+        
+    });
+    </script>
+    <% } %>
