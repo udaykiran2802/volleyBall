@@ -85,7 +85,8 @@ router.post('/', wrapAsync(async (req, res) => {
                 const payload = JSON.stringify({ 
                     title: 'New Video Added', 
                     body: `A new video "${newVideo.title}" has been uploaded! by ${req.user.username}`, 
-                    icon: '/images/volleyballA.png' 
+                    icon: '/images/volleyballA.png', 
+                    badge:'/images/volleyballA.png'
                 }); 
 
                 // Send notification to each subscription 
@@ -204,7 +205,8 @@ router.put('/:id', isLogggedin, isVideoOwner, wrapAsync(async (req, res) => {
         const payload = JSON.stringify({ 
             title: 'Video is edited', 
             body: `Changes occured in Video "${video.title}"! changes done by ${req.user.username}`, 
-            icon: '/images/volleyballA.png' 
+            icon: '/images/volleyballA.png' ,
+            badge:'/images/volleyballA.png'
         }); 
  
         // Send notification to each subscription 

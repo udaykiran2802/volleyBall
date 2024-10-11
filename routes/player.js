@@ -46,7 +46,8 @@ router.post('/',isLogggedin, upload.single('image'), wrapAsync(async (req, res) 
         const payload = JSON.stringify({ 
             title: 'NEW Profile Created!', 
             body: `A NEW Profile is created by ${req.user.username}`, 
-            icon: '/images/volleyballA.png' 
+            icon: '/images/volleyballA.png' ,
+            badge:'/images/volleyballA.png'
         }); 
  
         // Send notification to each subscription 
@@ -251,7 +252,8 @@ router.put('/:id',isLogggedin,isOwner, upload.single('image'), wrapAsync(async (
         const payload = JSON.stringify({ 
             title: 'Profile is Edited!', 
             body: `"${req.body.player.name}" Profile is Edited by ${req.user.username}`, 
-            icon: '/images/volleyballA.png' 
+            icon: '/images/volleyballA.png' ,
+            badge:'/images/volleyballA.png'
         }); 
  
         // Send notification to each subscription 
