@@ -9,6 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "generate-vapid-keys": "web-push generate-vapid-keys"
+    
   },
   "keywords": [],
   "author": "",
@@ -33,6 +34,7 @@
     "multer-storage-cloudinary": "^4.0.0",
     "node-fetch": "^3.3.2",
     "node-pushnotifications": "^3.1.1",
+    "nodemailer": "^6.9.15",
     "nodemon": "^3.1.4",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",

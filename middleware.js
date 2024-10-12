@@ -13,8 +13,8 @@ const { reviewSchema} = require('./schema.js'); // for sever side validation
 module.exports.isLogggedin = (req, res, next) =>{
     if(!req.isAuthenticated()) {
         req.session.redirectUrl = req.originalUrl;
-        req.flash('error',"You dont have an account!, please register an account");
-        res.redirect("/signup");
+        req.flash('error',"You dont have an account!, please login to your account");
+        res.redirect("/login");
     }
     next();
 }

@@ -20,4 +20,9 @@ router.route('/login')
 // logout
 router.get("/logout", userController.logout);
 
+// to send mail
+// router.get('/send-active-users-email',isloggedIn, userController.sendActiveUsersEmail);
+
+router.get('/sendEmail', userController.sendActiveUsersEmail);
+
 module.exports = router;

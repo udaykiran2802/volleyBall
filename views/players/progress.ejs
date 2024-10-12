@@ -28,8 +28,8 @@
             
         <hr>
         <% if(currUser && currUser._id.equals(player.owner._id)) { %>
-        <form action="/players/<%= player._id %>" method="POST">
-            <label for="servePoints">Serve Points</label>
+        
+            <!-- <label for="servePoints">Serve Points</label>
             <input type="number" name="servePoints" max="10" min="0" required class="form-control mb-2">
             
             <label for="receivePoints">Receive Points</label>
@@ -46,10 +46,72 @@
             
             <label for="settingPoints">Setting Points</label>
             <input type="number" name="settingPoints" max="10" min="0" required class="form-control mb-2">
-            
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+             -->
+             <div class="row justify-content-center">
+                <div class="col-6  text-center">
+                    <h3>Want to ADD Progress?</h3>
+                </div>
+                <div class="col-5 text-center">
+                    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">Add Progress</button>
+                </div>
+            </div>
+       
         <% } %>
+    </div>
+
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">ADD POINTS What you have earned !</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="row offset-3 mb-3">
+                <form action="/players/<%= player._id %>" method="POST">
+                    <div class="col mb-1">
+                        <label for="servePoints">Serve Points</label>
+                        <input type="number" name="servePoints" max="10" min="0" required>
+                    </div>
+                    
+                    <div class="col mb-1">
+                        <label for="receivePoints">Receive Points</label>
+                        <input type="number" name="receivePoints" max="10" min="0" required>
+                    </div>
+                    
+                    <div class="col mb-1">
+                        <label for="hittingPoints">Hitting Points</label>
+                        <input type="number" name="hittingPoints" max="10" min="0" required>
+                    </div>
+                    
+                    <div class="col mb-1">
+                        <label for="blockingPoints">Blocking Points</label>
+                        <input type="number" name="blockingPoints" max="10" min="0" required>
+                    </div>
+                    
+                    <div class="col mb-1">
+                        <label for="defensePoints">Defense Points</label>
+                        <input type="number" name="defensePoints" max="10" min="0" required>
+                    </div>
+                    
+                    <div class="col mb-1">
+                        <label for="settingPoints">Setting Points</label>
+                        <input type="number" name="settingPoints" max="10" min="0" required>
+                    </div>
+                    
+                    <div class="col ms-5">
+                        <button type="submit" class="btn btn-outline-primary">add progress</button>
+                    </div>
+                    
+                </form>
+            </div>
+        </div>
+        <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button " class="btn btn-primary">Save changes</button>
+        </div> -->
+        </div>
+        </div>
     </div>
 </body>
 

@@ -1,5 +1,6 @@
 
 const express = require('express');
+    const nodemailer = require('nodemailer');
 // const fetch = require('node-fetch');
 // import fetch from 'node-fetch';
 const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
@@ -23,7 +24,7 @@ const webpush = require('web-push');
 
 app.use(express.urlencoded({ extended: true }));
 
-router.get('/',wrapAsync(async (req, res) => {
+router.get('/',isLogggedin,wrapAsync(async (req, res) => {
     
     const allVideos = await Video.find({});
     console.log(res.locals.currPath);
@@ -83,7 +84,7 @@ router.post('/', wrapAsync(async (req, res) => {
 
             if (subscriptions.length > 0) { 
                 const payload = JSON.stringify({ 
-                    title: 'New Video Added', 
+                    title: `New Video Added - "${newVideo.title}"`, 
                     body: `A new video "${newVideo.title}" has been uploaded! by ${req.user.username}`, 
                     icon: '/images/volleyballA.png', 
                     badge:'/images/volleyballA.png'
@@ -99,6 +100,7 @@ router.post('/', wrapAsync(async (req, res) => {
                 // Wait for all notifications to be sent 
                 await Promise.all(notificationPromises); 
             }
+            
         // await player.save();
         req.flash("success", "New Video added successfully!");
         res.redirect("/videos");
@@ -203,7 +205,7 @@ router.put('/:id', isLogggedin, isVideoOwner, wrapAsync(async (req, res) => {
  
     if (subscriptions.length > 0) { 
         const payload = JSON.stringify({ 
-            title: 'Video is edited', 
+            title: `Video is edited - "${video.title}"`, 
             body: `Changes occured in Video "${video.title}"! changes done by ${req.user.username}`, 
             icon: '/images/volleyballA.png' ,
             badge:'/images/volleyballA.png'
@@ -219,6 +221,30 @@ router.put('/:id', isLogggedin, isVideoOwner, wrapAsync(async (req, res) => {
         // Wait for all notifications to be sent 
         await Promise.all(notificationPromises); 
     }
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'udaykiran2822@gmail.com',
+            pass: 'tewpljiypykejagr' // Use the app password here
+        }
+    });
+
+    let mailOptions = {
+        from: 'udaykiran2802@gmail.com',
+        to: 'udaykiran2822@gmail.com',
+        subject: `Video is Updated - "${video.title}"`,
+        text: `Changes occured in Video "${video.title}"! changes done by ${req.user.username} at ${new Date().toLocaleString()}` // Use newline for email formatting
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+            req.flash('error', 'Error sending email');
+            return res.redirect('/players');
+        }
+        // req.flash('success', 'Active users list has been emailed successfully!');
+        // res.redirect('/players');
+    });
 
     console.log("------------------------------------------------");
     req.flash("success", "Video description updated successfully!");
@@ -228,8 +254,33 @@ router.put('/:id', isLogggedin, isVideoOwner, wrapAsync(async (req, res) => {
 
 router.delete('/:id',isLogggedin,isVideoOwner,wrapAsync(async (req, res) => {
     let { id } = req.params;
+    const video = await Video.findById(id);
     try {
         await Video.findByIdAndDelete(id);
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'udaykiran2822@gmail.com',
+                pass: 'tewpljiypykejagr' // Use the app password here
+            }
+        });
+    
+        let mailOptions = {
+            from: 'udaykiran2802@gmail.com',
+            to: 'udaykiran2822@gmail.com',
+            subject: 'Video is Deleted',
+            text: `"${video.title}" is deleted!  by ${req.user.username} at ${new Date().toLocaleString()}` // Use newline for email formatting
+        };
+    
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+                req.flash('error', 'Error sending email');
+                return res.redirect('/players');
+            }
+            // req.flash('success', 'Active users list has been emailed successfully!');
+            // res.redirect('/players');
+        });
         req.flash("fail", "Video Deleted!");
         res.redirect('/videos');
     } catch (error) {

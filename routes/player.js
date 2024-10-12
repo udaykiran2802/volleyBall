@@ -1,6 +1,7 @@
 
 const express = require('express');
 const app = express();
+const nodemailer = require('nodemailer');
 const router = express.Router();
 // cloud lo photo store cheydaniki - output oka link vastundi
 const multer = require('multer');
@@ -211,6 +212,38 @@ router.post('/:id', isLogggedin,isOwner,wrapAsync(async function (req, res) {
     const pointsKey = 'servePoints'; // Default to servePoints if searchTerm is invalid
     const servePointsArray = player.progress.map(progressEntry => progressEntry[pointsKey]);
     const labels = servePointsArray.map((_, index) => `${index + 1}`);
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'udaykiran2822@gmail.com',
+            pass: 'tewpljiypykejagr' // Use the app password here
+        }
+    });
+
+    let mailOptions = {
+        from: 'udaykiran2802@gmail.com',
+        to: 'udaykiran2822@gmail.com',
+        subject: `Progress is ADDED to player "${player.name}" `,
+        text: `Progress : 
+        Present Data : 
+         serve:${Data.servePoints},
+        receive : ${Data.receivePoints},
+        hitting:${Data.hittingPoints},
+        blocking :${ Data.blockingPoints},
+        setting : ${Data.settingPoints},
+        defense : ${Data.defensePoints},
+        at  ${new Date().toLocaleString()}  ` // Use newline for email formatting
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+            req.flash('error', 'Error sending email');
+            return res.redirect('/players');
+        }
+        // req.flash('success', 'Active users list has been emailed successfully!');
+        // res.redirect('/players');
+    });
 
 
   
@@ -266,6 +299,30 @@ router.put('/:id',isLogggedin,isOwner, upload.single('image'), wrapAsync(async (
         // Wait for all notifications to be sent 
         await Promise.all(notificationPromises); 
     }
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'udaykiran2822@gmail.com',
+            pass: 'tewpljiypykejagr' // Use the app password here
+        }
+    });
+
+    let mailOptions = {
+        from: 'udaykiran2802@gmail.com',
+        to: 'udaykiran2822@gmail.com',
+        subject: 'Profile is Edited!',
+        text: `"${req.body.player.name}" Profile is Edited by ${req.user.username} at ${new Date().toLocaleString()}` // Use newline for email formatting
+    };
+
+    transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+            console.log(error);
+            req.flash('error', 'Error sending email');
+            return res.redirect('/players');
+        }
+        req.flash('success', 'Active users list has been emailed successfully!');
+        res.redirect('/players');
+    });
     console.log("------------------------------------------------");
     // console.log(req.body.listing);
     req.flash("success", "Player profile UPDATED successfully!");
@@ -273,8 +330,33 @@ router.put('/:id',isLogggedin,isOwner, upload.single('image'), wrapAsync(async (
 }));
 router.delete('/:id',isLogggedin,isOwner,wrapAsync(async (req, res) => {
     let { id } = req.params;
+    const player = await Player.findById(id);
     try {
         await Player.findByIdAndDelete(id);
+        let transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'udaykiran2822@gmail.com',
+                pass: 'tewpljiypykejagr' // Use the app password here
+            }
+        });
+    
+        let mailOptions = {
+            from: 'udaykiran2802@gmail.com',
+            to: 'udaykiran2822@gmail.com',
+            subject: 'Profile is Deleted!',
+            text: `"${player.name}" Profile is deleted by ${req.user.username} at ${new Date().toLocaleString()}` // Use newline for email formatting
+        };
+    
+        transporter.sendMail(mailOptions, (error, info) => {
+            if (error) {
+                console.log(error);
+                req.flash('error', 'Error sending email');
+                return res.redirect('/players');
+            }
+            req.flash('success', 'Active users list has been emailed successfully!');
+            res.redirect('/players');
+        });
         req.flash("fail", "Player profile deleted!");
         res.redirect('/players');
     } catch (error) {
